@@ -86,6 +86,7 @@ If you wanna take this table out of your database, rollback the last batch of mi
 
 ## To see your database
 1. In terminal
+reference:https://sqlite.org/cli.html
 `sqlite 3 dev.sqlite3`
 Now you're in the program
 `.schema`
@@ -94,7 +95,7 @@ TO see all your tables, these two are there by dafault
 CREATE TABLE "knex_migrations" ("id" integer not null primary key autoincrement, "name" varchar(255), "batch" integer, "migration_time" datetime);
 CREATE TABLE "knex_migrations_lock" ("is_locked" integer);
 ```
-Then you will see other tables you created following.
+Then you will see other tables you created and migrated beneath these two.
 ```
 CREATE TABLE "users" ("id" integer not null primary key autoincrement, "uname" varchar(255));
 ```
@@ -102,3 +103,38 @@ To see content of an individual table
 `select * from users`
 To exit from the program
 `Control-D` or `.exit` or `.quit`
+
+## Make seed
+To create a seed file, run:
+`knex seed:make populate_users`
+Seed files are created in the directory specified in your knexfile.js for the current environment. A sample seed configuration looks like:
+```
+development: {
+  client: ...,
+  connection: { ... },
+  seeds: {
+      directory: './seeds/dev'
+  }
+}
+```
+In our case usually no seeds.directory is defined, by default files are created in ./seeds. Note that the seed directory needs to be a relative path. Absolute paths are not supported (nor is it good practice).
+So now we have a file titled populate_users.js in seeds folder in root. We can edit it to fill it with our data.
+
+```
+exports.seed = function(knex, Promise) {
+  // Deletes ALL existing entries
+  return knex('users').del()
+    .then(function () {
+      // Inserts seed entries
+      return knex('users').insert([
+        {id: 1, name: 'Paul'},
+        {id: 2, name: 'John'},
+        {id: 3, name: 'Ringo'}
+      ]);
+    });
+};
+```
+Now we can populate the table we specified in the seed file with seeds we wrote:
+`knex seed:run`
+
+
