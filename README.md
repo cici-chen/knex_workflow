@@ -295,7 +295,7 @@ module.exports = router
 var api = require('./routes/api')
 server.use('/api', api)
 ```
-3. Set up tests for routes
+### Set up tests for routes
 create ./tests/api/users.test.js
 ```
 // Note: we use AVA here because it makes setting up the
