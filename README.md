@@ -20,11 +20,11 @@ Migrations use a knexfile, which specify various configuration settings for the 
 `knex init`
 That command Created ./knexfile.js
 > module.exports = {
->
->  development: {
->    client: 'sqlite3',
->    connection: {
->      filename: './dev.sqlite3'
+
+    development: {
+        client: 'sqlite3',
+        connection: {
+        filename: './dev.sqlite3'
 >    },
 >    useNullAsDefault: true
 >  },
@@ -41,26 +41,3 @@ That command Created ./knexfile.js
 >  }
 >
 >};
-
-module.exports = {
-
-  development: {
-    client: 'sqlite3',
-    connection: {
-      filename: './dev.sqlite3'
-    },
-    useNullAsDefault: true
-  },
-  production: {
-    client: 'postgresql',
-    connection: process.env.DATABASE_URL,
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
-  }
-
-};
