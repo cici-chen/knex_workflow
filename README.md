@@ -271,8 +271,6 @@ const dbFunctions = require('../db/db_functions')
 // '/' == '/api', we set it in server later
 // When we hit the '/api/users' route, we want info of all users to be sent back as a json file
 
-var dbFunctions = require('../db/db_functions')
-
 router.get('/', (req, res) => {
   let db = req.app.get('knex-database')
   dbFunctions.gerUsers(db)
@@ -291,4 +289,71 @@ router.get('/:id', (req, res) => {
 })
 
 module.exports = router
+```
+2. Set routes prefix in server.js
+```
+var api = require('./routes/api')
+server.use('/api', api)
+```
+3. Set up tests for routes
+create ./tests/api/users.test.js
+```
+// Note: we use AVA here because it makes setting up the
+// conditions for each test relatively simple. The same
+// can be done with Tape using a bit more code.
+
+// We use supertest here because we are testing api.
+
+var test = require('ava')
+var request = require('supertest')
+
+var app = require('../../server')
+var configureDatabase = require('./helpers/database-config')
+
+//Here we are using the temporary database for testing again, so that actual database is not modified
+configureDatabase(test, function (db) {
+  app.set('knex-batabase', db)
+})
+```
+Here we are setting the testing database to be used by the server, so 'knex-database' has to be same name as what we set knex to be in server.js. 
+```app.set('knex-database', knex)
+```
+So that when our test hits the server api routes, 
+```let db = req.app.get('knex-database')
+```
+Our app will get the test database as the database.
+
+Ok now continue on the actual test code:
+```
+test.cb('getUsers gets all users', function (t) {
+  var expected = 4
+  request(app)
+    .get('/api/users')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .end(function (err, res) {
+      if (err) throw err
+      t.is(res.body.users.length, expected)
+      t.end()
+    })
+})
+
+//This is just an example
+test.cb('postUser saves a user', (t) => {
+  request(app)
+    .post('/users')
+    .send({name: 'Yoko'})
+    // .expect('Content-Type', /json/)
+    // .expect(201)
+    .end((err, res) => {
+      if (err) throw err
+      return t.context.db('users')
+        .select()
+        .then((result) => {
+          t.is(result.length, 5)
+          t.is(result[26].name, 'Yoko')
+          t.end()
+        })
+    })
+})
 ```
