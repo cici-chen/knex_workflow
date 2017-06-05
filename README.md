@@ -202,7 +202,7 @@ var test = require('ava')
 var configureDatabase = require('./helpers/database-config')
 configureDatabase(test)
 
-var db = require('../db/db_functions)
+var db = require('../server/db/db_functions') //whereever your functions are
 
 test('getUsers gets all users', function (t) {
   var expected = 3
@@ -222,3 +222,17 @@ test('getUsers gets a single user', function (t) {
     })
 })
 ```
+4. Add test in scripts
+in ./package.json, add 
+```
+ "scripts": {
+    "test": "ava -v tests/**/*.test.js"
+  },
+```
+This will run test for all files ending in .test.js in the tests folder. You might want to modify it during development to 
+``` 
+`"scripts": {
+    `"test-db":"ava -v tests/db.test.js" 
+    }
+```
+So that you can run just the db tests without being distracted by other failing tests in the tests folder.
