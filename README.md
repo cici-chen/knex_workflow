@@ -150,6 +150,7 @@ Now we can populate the table we specified in the seed file with seeds we wrote:
 ### Write functions to get data from our knex database
 1. Create ./server/db/db_functions.js (you can name is whatever you want, ususally it is named db.js, but I find it more clear if I call it db_functions.js)
 
+Pause here. To be continued after we create the test and have the test fail properly.
 
 ### Set up tests to test the functions.
 reference:https://github.com/hihi-2017/boilerplate-knex/tree/master/tests
@@ -231,8 +232,29 @@ in ./package.json, add
 ```
 This will run test for all files ending in .test.js in the tests folder. You might want to modify it during development to 
 ``` 
-`"scripts": {
+"scripts": {
     `"test-db":"ava -v tests/db.test.js" 
     }
 ```
 So that you can run just the db tests without being distracted by other failing tests in the tests folder.
+Now if we run the test, it should throw error saying deb.getUser is not a function because we have not written any function in the file.
+
+### Write functions to get data from our knex database
+Previously we did:
+1. Create ./server/db/db_functions.js 
+Now we have tests, we write the functions to make them pass the tests.
+2. Write functions
+```
+    module.exports = {
+      getUser: getUser,
+      getUsers: getUsers
+    }
+
+    function getUsers (connection) {
+      return connection('users').select()
+    }
+
+    function getUser (id, connection) {
+      return connection('users').where('id', id)
+    }
+```
