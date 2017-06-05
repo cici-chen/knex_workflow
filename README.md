@@ -19,9 +19,8 @@ pg for PostgreSQL, mysql for MySQL or MariaDB, sqlite3 for SQLite3, or mssql for
 Migrations use a knexfile, which specify various configuration settings for the module. To create a new knexfile, run the following:
 `knex init`
 That command Created ./knexfile.js
-> 
-module.exports = {
-
+    module.exports = {
+    
     development: {
         client: 'sqlite3',
         connection: {
@@ -39,5 +38,5 @@ module.exports = {
     migrations: {
     tableName: 'knex_migrations'
     }
-    }
-    };
+   }
+  };
