@@ -290,7 +290,7 @@ router.get('/:id', (req, res) => {
 
 module.exports = router
 ```
-2. Set routes prefix in server.js
+2. Set routes and prefix in server.js
 ```
 var api = require('./routes/api')
 server.use('/api', api)
