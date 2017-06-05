@@ -258,3 +258,37 @@ Now we have tests, we write the functions to make them pass the tests.
       return connection('users').where('id', id)
     }
 ```
+Now if we run the test again, we should have passing tests.
+
+### Build an api on server to give knex data to client
+1. Create ./server/routes/api.js (you can call it whatever)
+```
+const express = require('express')
+
+const router = express.Router()
+const dbFunctions = require('../db/db_functions')
+
+// '/' == '/api', we set it in server later
+// When we hit the '/api/users' route, we want info of all users to be sent back as a json file
+
+var dbFunctions = require('../db/db_functions')
+
+router.get('/', (req, res) => {
+  let db = req.app.get('knex-database')
+  dbFunctions.gerUsers(db)
+    .then(users => {
+      res.json(users)
+    })
+})
+
+
+router.get('/:id', (req, res) => {
+  let connectAppToKnex = req.app.get('knex-database') //we set this in server.js with app.set('knex-database', knex)
+  dbFunctions.getUser(req.params.id, connectAppToKnex) //we use getUser function from dbFunctions to get user info from knex database, then it is returned as result, which we named as userData
+    .then(userData => {
+      res.json(userData)
+    })
+})
+
+module.exports = router
+```
