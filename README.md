@@ -85,12 +85,17 @@ If you wanna take this table out of your database, rollback the last batch of mi
 `knex migrate:rollback`
 
 ## To see your database
+reference:
+https://sqlite.org/cli.html
 1. In terminal
-reference:https://sqlite.org/cli.html
+Type
 `sqlite 3 dev.sqlite3`
-Now you're in the program
-`.schema`
-TO see all your tables, these two are there by dafault
+Now you're in the program. You can actually create table and insert seeds from here, but we are only using it to see the tables and their contents.
+To see content of an individual table
+`select * from users;`
+**must inlcude the ; at the end, otherwise you will not see shit from your table.**
+`.schema` this will show tables and their columns
+these two are in schema by dafault
 ```
 CREATE TABLE "knex_migrations" ("id" integer not null primary key autoincrement, "name" varchar(255), "batch" integer, "migration_time" datetime);
 CREATE TABLE "knex_migrations_lock" ("is_locked" integer);
@@ -99,10 +104,13 @@ Then you will see other tables you created and migrated beneath these two.
 ```
 CREATE TABLE "users" ("id" integer not null primary key autoincrement, "uname" varchar(255));
 ```
-To see content of an individual table
-`select * from users`
+`.tables` this will show only names of the tables
+
 To exit from the program
 `Control-D` or `.exit` or `.quit`
+
+2. In browser
+There is a plug-in to see the tables in firefox/chrome browser I can't remember. Maybe I will add this later.
 
 ## Make seed
 To create a seed file, run:
@@ -137,4 +145,80 @@ exports.seed = function(knex, Promise) {
 Now we can populate the table we specified in the seed file with seeds we wrote:
 `knex seed:run`
 
+=================**Now we have set up knex by itself, we need to link it to our website via routes**==================
 
+## Write functions to get data from our knex database
+1. Create ./server/db/db_functions.js (you can name is whatever you want, ususally it is named db.js, but I find it more clear if I call it db_functions.js)
+
+
+## Set up tests to test the functions.
+reference:https://github.com/hihi-2017/boilerplate-knex/tree/master/tests
+1. Set up test environment
+in ./knexfile.js add
+```
+ test: {
+    client: 'sqlite3',
+    connection: {
+      filename: ':memory:'
+    },
+    useNullAsDefault: true
+  }
+```
+2. Create test database
+create ./tests/helpers/database-config.js
+```
+var knex = require('knex')
+var config = require('../../knexfile').test
+
+module.exports = (test, createServer) => {
+  // Create a separate in-memory database before each test.
+  // In our tests, we can get at the database as `t.context.db`.
+  test.beforeEach(function (t) {
+    t.context.connection = knex(config)
+    if (createServer) t.context.app = createServer(t.context.connection)
+    return t.context.connection.migrate.latest()
+      .then(function () {
+        return t.context.connection.seed.run()
+      })
+  })
+
+  // Destroy the database connection after each test.
+  test.afterEach(function (t) {
+    t.context.connection.destroy()
+  })
+}
+```
+This will create a temporary database that has same tables and seeds as your knex database. You will use this test database to test your functions without making modifications to your real database.
+
+3. Create test for database functions
+create ./tests/db.test.js
+```
+// Note: we use AVA here because it makes setting up the
+// conditions for each test relatively simple. The same
+// can be done with Tape using a bit more code.
+
+var test = require('ava')
+
+var configureDatabase = require('./helpers/database-config')
+configureDatabase(test)
+
+var db = require('../db/db_functions)
+
+test('getUsers gets all users', function (t) {
+  var expected = 3
+  return db.getUsers(t.context.connection)
+    .then(function (result) {
+      var actual = result.length
+      t.is(expected, actual)
+    })
+})
+
+test('getUsers gets a single user', function (t) {
+  var expected = 'Paul'
+  return db.getUser(1, t.context.connection)
+    .then(function (result) {
+      var actual = result[0].name
+      t.is(expected, actual)
+    })
+})
+```
