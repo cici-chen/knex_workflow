@@ -345,8 +345,8 @@ test.cb('postUser saves a user', (t) => {
   request(app)
     .post('/users')
     .send({name: 'Yoko'})
-    // .expect('Content-Type', /json/)
-    // .expect(201)
+    .expect('Content-Type', /json/)
+    .expect(201)
     .end((err, res) => {
       if (err) throw err
       return t.context.db('users')
