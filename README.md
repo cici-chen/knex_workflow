@@ -4,10 +4,10 @@ References:
 http://knexjs.org/#Migrations-CLI
 https://github.com/hihi-2017/phase-2-boilerplate
 
-## Install globally in your computer
+### Install globally in your computer
 `npm i -g knex`
 
-## Install locally in your project
+### Install locally in your project
 1. `npm i --save knex` 
 2. in **package.json**, "scripts": {
     "knex": "knex"
