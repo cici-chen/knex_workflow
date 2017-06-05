@@ -27,7 +27,7 @@ That command Created ./knexfile.js
         connection: {
         filename: './dev.sqlite3'
         },
-        useNullAsDefault: true
+        useNullAsDefault: true (comment: this line is to address the warning in terminal "Knex:warning - sqlite does not support inserting default values. Set the `useNullAsDefault` flag to hide this warning. (see docs http://knexjs.org/#Builder-insert)."
         },
     production: {
         client: 'postgresql',
@@ -43,3 +43,21 @@ That command Created ./knexfile.js
   };
 
 ```
+
+## Connect knex to server 
+In server.js, add 
+```
+var environment = process.env.NODE_ENV || 'development'
+var config = require('../knexfile')[environment]
+var knex = require('knex')(config)
+
+```
+Here you set up environment for knex, and require knex library in server.js
+Then after you set up server with `var server = express()`
+You give the knex database a name.
+`server.set('whateveryouwannacallit', knex)`
+
+## Make table
+Once you have a knexfile.js, you can use the migration tool to create migration files to the specified directory (default migrations). Creating new migration files can be achieved by running:
+`knex migrate:make migration_tablename`
+
