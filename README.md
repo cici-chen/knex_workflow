@@ -147,7 +147,7 @@ Now we can populate the table we specified in the seed file with seeds we wrote:
 
 ## Now we have set up knex by itself, we need to link it to our website via routes 
 
-### Write functions to get data from our knex database
+### Write functions to get/edit data from our knex database
 1. Create ./server/db/db_functions.js (you can name is whatever you want, ususally it is named db.js, but I find it more clear if I call it db_functions.js)
 
 Pause here. To be continued after we create the test and have the test fail properly.
@@ -239,7 +239,7 @@ This will run test for all files ending in .test.js in the tests folder. You mig
 So that you can run just the db tests without being distracted by other failing tests in the tests folder.
 Now if we run the test, it should throw error saying deb.getUser is not a function because we have not written any function in the file.
 
-### Write functions to get data from our knex database
+### Write functions to get/edit data from our knex database
 Previously we did:
 1. Create ./server/db/db_functions.js 
 Now we have tests, we write the functions to make them pass the tests.
@@ -259,6 +259,26 @@ Now we have tests, we write the functions to make them pass the tests.
     }
 ```
 Now if we run the test again, we should have passing tests.
+
+### Standard SQL querie
+- select
+```
+knex.select('title', 'author', 'year').from('books')
+knex.select().table('books')
+```
+return an array of objects selected from the database. 
+- insert
+```
+connection('users').insert(
+    {
+    name:'John'
+    }
+```
+id is left out, therefore it will be defualt.
+return an array containing the first insert id of the inserted model, or an array containing all inserted ids for postgresql
+- update
+
+- delete.
 
 ### Build an api on server to give knex data to client
 1. Create ./server/routes/api.js (you can call it whatever)
