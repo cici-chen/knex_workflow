@@ -307,7 +307,7 @@ create ./tests/api/users.test.js
 var test = require('ava')
 var request = require('supertest')
 
-var app = require('../../server')
+var app = require('../../server/server')
 var configureDatabase = require('./helpers/database-config')
 
 //Here we are using the temporary database for testing again, so that actual database is not modified
