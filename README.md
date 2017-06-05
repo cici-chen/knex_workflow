@@ -1,5 +1,8 @@
 # Knex Workflow
 A place for me to keep notes on how to set up knex in express server
+References:
+http://knexjs.org/#Migrations-CLI
+https://github.com/hihi-2017/phase-2-boilerplate
 
 ## Install globally in your computer
 `npm i -g knex`
@@ -60,4 +63,42 @@ You give the knex database a name.
 ## Make table
 Once you have a knexfile.js, you can use the migration tool to create migration files to the specified directory (default migrations). Creating new migration files can be achieved by running:
 `knex migrate:make migration_tablename`
+This will create a migrations folder and a file. Open the newly created file and write out the migration
+```
 
+exports.up = function(knex, Promise) {
+  return knex.schema.createTableIfNotExists('users', (table) => {
+    table.increments('id').primary()
+    table.string('name')
+  })
+};
+
+exports.down = function(knex, Promise) {
+  return knex.schema.dropTableIfExists('users')
+};
+
+```
+Once you've written the migration, you can update the database matching your NODE_ENV (Not sure what this means) by running:
+`knex migrate:latest`
+Now the new table is in your database.
+If you wanna take this table out of your database, rollback the last batch of migrations:
+`knex migrate:rollback`
+
+## To see your database
+1. In terminal
+`sqlite 3 dev.sqlite3`
+Now you're in the program
+`.schema`
+TO see all your tables, these two are there by dafault
+```
+CREATE TABLE "knex_migrations" ("id" integer not null primary key autoincrement, "name" varchar(255), "batch" integer, "migration_time" datetime);
+CREATE TABLE "knex_migrations_lock" ("is_locked" integer);
+```
+Then you will see other tables you created following.
+```
+CREATE TABLE "users" ("id" integer not null primary key autoincrement, "uname" varchar(255));
+```
+To see content of an individual table
+`select * from users`
+To exit from the program
+`Control-D` or `.exit` or `.quit`
