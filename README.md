@@ -14,11 +14,11 @@ https://github.com/hihi-2017/phase-2-boilerplate
   },
   You're saying that when I run `npm run knex` in terminal, I'm referring to the knex module.
 
-## After installing the knex library, then install the appropriate database library
+### After installing the knex library, then install the appropriate database library
 pg for PostgreSQL, mysql for MySQL or MariaDB, sqlite3 for SQLite3, or mssql for MSSQL.
 `npm i --save-dev sqlite3` in our case
 
-## Initialize the knex library
+### Initialize the knex library
 Migrations use a knexfile, which specify various configuration settings for the module. To create a new knexfile, run the following:
 `knex init`
 That command Created ./knexfile.js
@@ -47,7 +47,7 @@ That command Created ./knexfile.js
 
 ```
 
-## Connect knex to server 
+### Connect knex to server 
 In server.js, add 
 ```
 var environment = process.env.NODE_ENV || 'development'
@@ -60,7 +60,7 @@ Then after you set up server with `var server = express()`
 You give the knex database a name.
 `server.set('whateveryouwannacallit', knex)`
 
-## Make table
+### Make table
 Once you have a knexfile.js, you can use the migration tool to create migration files to the specified directory (default migrations). Creating new migration files can be achieved by running:
 `knex migrate:make migration_tablename`
 This will create a migrations folder and a file. Open the newly created file and write out the migration
@@ -84,7 +84,7 @@ Now the new table is in your database.
 If you wanna take this table out of your database, rollback the last batch of migrations:
 `knex migrate:rollback`
 
-## To see your database
+### To see your database
 reference:
 https://sqlite.org/cli.html
 1. In terminal
@@ -112,7 +112,7 @@ To exit from the program
 2. In browser
 There is a plug-in to see the tables in firefox/chrome browser I can't remember. Maybe I will add this later.
 
-## Make seed
+### Make seed
 To create a seed file, run:
 `knex seed:make populate_users`
 Seed files are created in the directory specified in your knexfile.js for the current environment. A sample seed configuration looks like:
@@ -145,13 +145,13 @@ exports.seed = function(knex, Promise) {
 Now we can populate the table we specified in the seed file with seeds we wrote:
 `knex seed:run`
 
-=================**Now we have set up knex by itself, we need to link it to our website via routes**==================
+## Now we have set up knex by itself, we need to link it to our website via routes 
 
-## Write functions to get data from our knex database
+### Write functions to get data from our knex database
 1. Create ./server/db/db_functions.js (you can name is whatever you want, ususally it is named db.js, but I find it more clear if I call it db_functions.js)
 
 
-## Set up tests to test the functions.
+### Set up tests to test the functions.
 reference:https://github.com/hihi-2017/boilerplate-knex/tree/master/tests
 1. Set up test environment
 in ./knexfile.js add
