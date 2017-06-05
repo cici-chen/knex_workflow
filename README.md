@@ -316,10 +316,12 @@ configureDatabase(test, function (db) {
 })
 ```
 Here we are setting the testing database to be used by the server, so 'knex-database' has to be same name as what we set knex to be in server.js. 
-```app.set('knex-database', knex)
+```
+app.set('knex-database', knex)
 ```
 So that when our test hits the server api routes, 
-```let db = req.app.get('knex-database')
+```
+let db = req.app.get('knex-database')
 ```
 Our app will get the test database as the database.
 
