@@ -327,7 +327,7 @@ Our app will get the test database as the database.
 
 Ok now continue on the actual test code:
 ```
-test.cb('getUsers gets all users', function (t) {
+test.cb('GET /api/users gets all users', function (t) {
   var expected = 4
   request(app)
     .get('/api/users')
@@ -341,7 +341,7 @@ test.cb('getUsers gets all users', function (t) {
 })
 
 //This is just an example
-test.cb('postUser saves a user', (t) => {
+test.cb('POST api/users saves a user', (t) => {
   request(app)
     .post('/users')
     .send({name: 'Yoko'})
