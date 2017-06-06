@@ -90,7 +90,7 @@ reference:
 https://sqlite.org/cli.html
 1. In terminal
 Type
-`sqlite 3 dev.sqlite3`
+`sqlite3 dev.sqlite3`
 Now you're in the program. You can actually create table and insert seeds from here, but we are only using it to see the tables and their contents.
 To see content of an individual table
 `select * from users;`
