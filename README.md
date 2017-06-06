@@ -90,12 +90,30 @@ reference:
 https://sqlite.org/cli.html
 1. In terminal
 Type
-`sqlite3 dev.sqlite3`
+```
+sqlite3 dev.sqlite3
+```
 Now you're in the program. You can actually create table and insert seeds from here, but we are only using it to see the tables and their contents.
+
 To see content of an individual table
-`select * from users;`
+```
+select * from users;
+```
 **must inlcude the ; at the end, otherwise you will not see shit from your table.**
-`.schema` this will show tables and their columns
+
+If the table is quite big, to make it easier to read, use line mode
+```
+sqlite> .mode line
+sqlite> select * from tbl1;
+one = hello
+two = 10
+
+one = goodbye
+two = 20
+sqlite>
+```
+show all tables and their columns type
+`.schema` 
 these two are in schema by dafault
 ```
 CREATE TABLE "knex_migrations" ("id" integer not null primary key autoincrement, "name" varchar(255), "batch" integer, "migration_time" datetime);
