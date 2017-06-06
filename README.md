@@ -4,7 +4,7 @@ References:
 http://knexjs.org/#Migrations-CLI
 https://github.com/hihi-2017/phase-2-boilerplate
 
-### Install globally in your computer
+### Install globally in your computer 
 `npm i -g knex`
 
 ### Install locally in your project
@@ -13,6 +13,7 @@ https://github.com/hihi-2017/phase-2-boilerplate
     "knex": "knex"
   },
   You're saying that when I run `npm run knex` in terminal, I'm referring to the knex module.
+  If you have installed knex globally in your computer, then you don't need to add "knex":"knex" in your scripts, and you can run knex without adding "npm run" before it
 
 ### After installing the knex library, then install the appropriate database library
 pg for PostgreSQL, mysql for MySQL or MariaDB, sqlite3 for SQLite3, or mssql for MSSQL.
